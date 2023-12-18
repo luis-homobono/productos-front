@@ -12,7 +12,7 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
     const [min, setMin] = useState(0);
-    const [max, setMax] = useState(0);
+    const [max, setMax] = useState(null);
 
     const filterData = () => {
         let url = 'http://localhost:8000/api/products?'
@@ -109,6 +109,7 @@ const Home = () => {
                             <th className="border border-slate-600 rounded-md max-md:hidden">Descripción</th>
                             <th className="border border-slate-600 rounded-md">Precio</th>
                             <th className="border border-slate-600 rounded-md">Cantidad</th>
+                            <th className="border border-slate-600 rounded-md max-md:hidden">Imagen</th>
                             <th className="border border-slate-600 rounded-md">Operaciones</th>
                         </tr>
                     </thead>
@@ -132,6 +133,9 @@ const Home = () => {
                                 </td>
                                 <td className="border border-slate-700 rounded-md text-center">
                                     {product.cantidad}
+                                </td>
+                                <td className="border border-slate-700 rounded-md text-center max-md:hidden">
+                                    {product.imagen}
                                 </td>
                                 <td className="border border-slate-700 rounded-md text-center">
                                     <div className="flex justify-center gap-x-4">
