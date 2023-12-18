@@ -1,8 +1,10 @@
-# React + Vite
+# Frontend para api productos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Primero necesitamos levantar el repositorio de laravel donde tenemos los endpoints de nuestra api.
 
-Currently, two official plugins are available:
+# Levantar el front
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+npm install
+npm run dev
+```
