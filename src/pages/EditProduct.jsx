@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import BackButton from "../components/BackButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CreateProduct = () => {
+const EditProduct = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -12,10 +12,30 @@ const CreateProduct = () => {
     const [image, setImage] = useState('');
     const [loading, setLoading] = useState(false);
 
-
+    const { id } = useParams()
     const navigate = useNavigate();
 
-    const handleSaveProduct = () => {
+    useEffect(() => {
+        setLoading(true);
+        axios
+            .get(`http://localhost:8000/api/product/${id}`)
+            .then((response) => {
+                console.log(response)
+                setName(response.data.product.nombre);
+                setDescription(response.data.product.descripcion);
+                setPrice(response.data.product.precio);
+                setQuantity(response.data.product.cantidad)
+                setImage(response.data.product.imagen)
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                enqueueSnackbar('Error Book not saved ', { variant: 'error' })
+                console.log(error);
+            });
+    }, []);
+
+    const handleEditProduct = () => {
         const data = {
             'nombre': name,
             'descripcion': description,
@@ -23,16 +43,16 @@ const CreateProduct = () => {
             'cantidad': quantity,
             'imagen': image
         };
-        console.log(data)
         setLoading(true);
         axios
-            .post('http://localhost:8000/api/products/create', data)
+            .put(`http://localhost:8000/api/product/${id}`, data)
             .then(() => {
                 setLoading(false);
                 navigate('/');
             })
             .catch((error) => {
                 setLoading(false);
+                alert('An error happened. Please Check console');
                 console.log(error);
             })
     }
@@ -40,7 +60,7 @@ const CreateProduct = () => {
     return (
         <div className="p-4 ">
             <BackButton />
-            <h1 className="text-3xl m-4">Crear Producto</h1>
+            <h1 className="text-3xl m-4">Editar Producto</h1>
             {loading ? <Spinner /> : ''}
             <div className="flex flex-col border-2 border-sky-400 rounded-xl w-[600px] p-4 mx-auto">
                 <div className="my-4">
@@ -53,7 +73,7 @@ const CreateProduct = () => {
                     />
                 </div>
                 <div className="my-4">
-                    <label className="text-xl mr-4 text-gray-500">Descripción</label>
+                    <label className="text-xl mr-4 text-gray-500">Descripcion</label>
                     <input
                         type="text"
                         value={description}
@@ -80,7 +100,7 @@ const CreateProduct = () => {
                     />
                 </div>
                 <div className="my-4">
-                    <label className="text-xl mr-4 text-gray-500">Imagen</label>
+                    <label className="text-xl mr-4 text-gray-500">Image</label>
                     <input
                         type="text"
                         value={image}
@@ -88,7 +108,7 @@ const CreateProduct = () => {
                         className="border-2 border-gray-500 px-4 w-full"
                     />
                 </div>
-                <button className="p-2 bg-sky-300 m-8" onClick={handleSaveProduct}>
+                <button className="p-2 bg-sky-300 m-8" onClick={handleEditProduct}>
                     Guardar
                 </button>
             </div>
@@ -96,4 +116,4 @@ const CreateProduct = () => {
     )
 }
 
-export default CreateProduct;
+export default EditProduct;
